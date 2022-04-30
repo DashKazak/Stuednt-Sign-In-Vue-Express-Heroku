@@ -38,10 +38,10 @@ export default {
     updateStudents(){
       this.$student_api.getAllStudents().then(students => {
         this.students = students
-      }).catch( () => alert('Unable to fetch a student list'))
+      }).catch( ()=>alert('Unable to fetch a student list'))
     },
     newStudentAdded(student){
-      this.$student_api.addStudent(student).then(()=>{
+      this.$student_api.addStudent(student).then( () =>{
         this.updateStudents()
       }).catch(err => {
         let msg = err.response.data.json(',')

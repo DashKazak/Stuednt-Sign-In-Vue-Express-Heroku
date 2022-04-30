@@ -37,9 +37,9 @@ import StudentRow from '@/components/StudentRow.vue'
 export default {
     name:'StudentTable',
     components:{
-        StudentRow
+         StudentRow 
     },
-    emits:['student-arrived-or-left'],
+    emits:['student-arrived-or-left', 'delete-student'],
     props:{
         students:Array
     },

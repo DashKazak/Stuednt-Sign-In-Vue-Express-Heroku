@@ -13,7 +13,7 @@ let sequelize
 
 if (config.use_env_variable){
     //at Heroku, use postgres
-    sequelize= new Sequelize(process.env[config.use_env_variable])
+    sequelize= new Sequelize(process.env[config.use_env_variable],config)
 }else{
     //running localy, dev mode, use sqlite
     sequelize = new Sequelize(config)
