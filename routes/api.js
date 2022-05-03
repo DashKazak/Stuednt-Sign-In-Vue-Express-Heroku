@@ -1,6 +1,4 @@
 let express = require('express')
-let Sequelize = require('sequelize')
-const { sequelize } = require('../models')
 let db = require('../models')
 let Student = db.Student
 
@@ -8,8 +6,9 @@ let router = express.Router()
 
 //GET request
 router.get('/students', function(req,res,next){
-    //order helps sort students by the name order, in the array we can sort by multiple thigns
-    Student.findAll({order:['name','present']}).then(students => {
+    //sorting students by present and starID
+    //first sorted by present, then by starID
+    Student.findAll({order:['present','starID']}).then(students => {
         return res.json(students)
     }).catch(err => next(err))
 })
@@ -27,7 +26,7 @@ router.post('/students',function(req,res,next){
             let messages = err.errors.map(e=>e.message)
             return res.status(400).json(messages)
         }
-
+ 
         //server errors: 500: how to deal with those
         //see ServiceWorkerRegistration.js line 17
         
@@ -66,18 +65,21 @@ router.patch('/students/:id',function(req,res,next){
         })
 })
 
-//delete a student
+//delete a student which means to respond to a request with method delte
 router.delete('/students/:id', function(req,res,next){
+    //get :id 
     let studentID = req.params.id
-    Student.destoy({where:{id:studentID}})
-    .then((rowsDeleted)=>{
-        if(rowsDeleted == 1){
-        return res.send('success')
-        } else{
-            return res.status(404).json(['Not Found'])
-        }
-    })
-    .catch( err => next(err)) //catches unexpected errors
+    //sequelize destroy method
+    Student.destroy( { where: { id:studentID } } )
+    //the then returns a number of rows deleted
+        .then( (rowsDeleted)=>{
+            if(rowsDeleted == 1){
+                return res.send('success')
+            } else{
+                return res.status(404).json(['Not Found'])
+            }
+        }).catch( err => next(err)) //catches unexpected errors
+    
 })
 
 module.exports = router

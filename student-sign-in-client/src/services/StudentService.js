@@ -11,7 +11,7 @@ export default{
         })
     }, 
 
-    addStudents(student){
+    addStudent(student){
         return axios.post(base_url, student).then(response => {
             return response.data
         })
